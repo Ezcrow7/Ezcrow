@@ -3,7 +3,7 @@
 const NavBar = () => {
   return (
     <div className="w-full px-5 bg-transparent border-b">
-      <div className="w-full max-w-[77rem] mx-auto py-2 flex justify-between items-center">
+      <div className="app-container py-2 flex justify-between items-center">
         <a href="/" className="">
           <img src="/assets/logo/ezcrow-logo.png" alt="Ezcrow Logo" className="h-10 sm:h-[3.2rem]" />
         </a>
