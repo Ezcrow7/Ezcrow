@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+  .app-container {
+    @apply w-full max-w-[77rem] mx-auto
+  }
+
+  .btn-primary {
+    @apply font-medium bg-green-400 text-white
+  }
+
+  .btn-danger {
+    @apply font-medium bg-red-400 text-white
+  }
+}
