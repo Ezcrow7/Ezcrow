@@ -15,14 +15,6 @@ const Filter = () => {
 
 
 
-  const updateDropdownValue = (value) => {
-    setOpenDropDown(null)
-    setPriceDropDownValue(value)
-    setCurrencyDropDownValue(value)
-  }
-
-
-
 
 
   return (
