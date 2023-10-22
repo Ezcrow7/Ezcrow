@@ -4,11 +4,11 @@ import { SELL_TOKEN_ABI } from "./coreVariables";
 
 
 export const chainName = {
-                '0x1': 'Ethereum Main Network', '0x3': 'Ropsten Test Network', '0x4': 'Rinkeby Test Network', '0x5': 'Goerli Test Network', '0x2a': 'Kovan Test Network', '0x89': 'Polygon Mainnet', '0x13881': 'Matic Mumbai Testnet', '0x38': 'BSC Mainnet', '0x61': 'BSC Testnet', '0x28': 'Telos EVM Mainnet'
+                '0x1': 'Ethereum Main Network', '0x3': 'Ropsten Test Network', '0x4': 'Rinkeby Test Network', '0x5': 'Goerli Test Network', '0x2a': 'Kovan Test Network', '0x89': 'Polygon Mainnet', '0x13881': 'Matic Mumbai Testnet', '0x38': 'BSC Mainnet', '0x61': 'BSC Testnet', '0x28': 'Telos EVM Mainnet', '0x1389': 'Mantle Testnet'
               },
               web3 = new Web3(Web3.givenProvider || 'https://polygon-rpc.com/');
 
-              
+
 
 
 export const initContract = async (ABI, ADDRESS) => {
@@ -34,6 +34,38 @@ export const getTokenSymbol = async (TOKEN_ADDRESS) => {
     console.log('getTokenSymbolError: ', getTokenSymbolError.message);
   }
 }
+
+
+
+
+// export const getConnectedWalletBalance = async () => {
+//   try {
+//     const contract = await initContract(SELL_TOKEN_ABI, STANDARD_TOKEN_ADDRESS),
+//           rbnContract = await initContract(SELL_TOKEN_ABI, RBN_STANDARD_TOKEN_ADDRESS),
+//           account = await getConnectedWalletAddress(),
+//           standardTokenBalance = await contract.methods.balanceOf(account).call(),
+//           standardTokenSymbol = await contract.methods.symbol().call(),
+//           networkTokenBalance = await web3.eth.getBalance(account),
+//           rbnTokenSymbol = await rbnContract.methods.symbol().call(),
+//           rbnTokenBalance = await rbnContract.methods.balanceOf(account).call();
+
+//     // console.info(standardTokenBalance);
+//     if (account.length > 0) {
+//       return {
+//         networkTokenBalance: (networkTokenBalance / Math.pow(10, 18)),
+//         standardTokenBalance: (standardTokenBalance / Math.pow(10, 6)),
+//         standardTokenSymbol: standardTokenSymbol,
+//         rbnTokenBalance: (rbnTokenBalance / Math.pow(10, 6)),
+//         rbnTokenSymbol: rbnTokenSymbol
+//       };
+//     }
+    
+//     console.log('Not connected');
+//     return false;
+//   } catch (getConnectedWalletBalanceError) {
+//     console.log('getConnectedWalletBalanceError: ', getConnectedWalletBalanceError.message);
+//   }
+// }
 
 
 
@@ -105,6 +137,17 @@ export const checkWalletChainAndSwitch = async (chainToSwitchTo) => {
             },
             rpcUrls: ['https://mainnet.telos.net/evm'],
             blockExplorerUrls: ['https://teloscan.io/'],
+          },
+
+          '0x1389': {
+            chainId: '0x1389',
+            chainName: 'Mantle Testnet',
+            nativeCurrency: {
+              name: 'MNT',
+              symbol: 'MNT',
+              decimals: 18
+            },
+            rpcUrls: ['https://rpc.testnet.mantle.xyz']
           },
         };
 
@@ -186,7 +229,7 @@ export const connectToMetamask = async () => {
       connectedAccount = await window.ethereum.request({ method: "eth_accounts" });
 
   if (connectedAccount && connectedAccount.length > 0) {
-    hashedWallet = `${connectedAccount[0].slice(0, 6)}........${connectedAccount[0].slice(connectedAccount[0].length - 4, connectedAccount[0].length)}`
+    hashedWallet = `${connectedAccount[0].slice(0, 6)}......${connectedAccount[0].slice(connectedAccount[0].length - 4, connectedAccount[0].length)}`
 
 
     return {
@@ -196,7 +239,7 @@ export const connectToMetamask = async () => {
     return new Promise((resolve, reject) => {
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(accounts => {
-          hashedWallet = `${accounts[0].slice(0, 6)}........${accounts[0].slice(accounts[0].length - 4, accounts[0].length)}`
+          hashedWallet = `${accounts[0].slice(0, 6)}......${accounts[0].slice(accounts[0].length - 4, accounts[0].length)}`
 
           toast.success("Wallet Connected")
           return resolve({
