@@ -229,7 +229,7 @@ export const connectToMetamask = async () => {
       connectedAccount = await window.ethereum.request({ method: "eth_accounts" });
 
   if (connectedAccount && connectedAccount.length > 0) {
-    hashedWallet = `${connectedAccount[0].slice(0, 6)}......${connectedAccount[0].slice(connectedAccount[0].length - 4, connectedAccount[0].length)}`
+    hashedWallet = hashWalletID(connectedAccount[0])
 
 
     return {
@@ -239,7 +239,7 @@ export const connectToMetamask = async () => {
     return new Promise((resolve, reject) => {
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(accounts => {
-          hashedWallet = `${accounts[0].slice(0, 6)}......${accounts[0].slice(accounts[0].length - 4, accounts[0].length)}`
+          hashedWallet = hashWalletID(accounts[0])
 
           toast.success("Wallet Connected")
           return resolve({
@@ -256,4 +256,12 @@ export const connectToMetamask = async () => {
       return
     })
   }
+}
+
+
+
+
+
+export const hashWalletID = (walletID) => {
+  return `${walletID.slice(0, 6)}......${walletID.slice(walletID.length - 4, walletID.length)}`
 }
