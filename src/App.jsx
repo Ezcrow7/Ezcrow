@@ -38,50 +38,48 @@ function App() {
   
   
   useEffect(() => {
-    setTimeout(() => {
-      checkIfMetamaskIsInstalled().then(installed => {
+    checkIfMetamaskIsInstalled().then(installed => {
 
-        if (installed === true) {
-          window.ethereum.on('chainChanged', (_chainId) => {
-            if (typeof _chainId !== 'undefined') {
-              if (_chainId !== chainInfo.hex) { /* METAMASK IS NOT ON THE PREFERRED NETWORK */
-                setShowChainPopUp(true)
-                setSwitchedNetwork(previousState => ({...previousState, status: false}))
-                return true;
+      if (installed === true) {
+        window.ethereum.on('chainChanged', (_chainId) => {
+          if (typeof _chainId !== 'undefined') {
+            if (_chainId !== chainInfo.hex) { /* METAMASK IS NOT ON THE PREFERRED NETWORK */
+              setShowChainPopUp(true)
+              setSwitchedNetwork(previousState => ({...previousState, status: false}))
+              return true;
+            }
+          }
+          setShowChainPopUp(false)
+          setSwitchedNetwork(previousState => ({...previousState, status: true}))
+          return false;
+        });
+
+        
+        return getConnectedWalletAddress().then(account => {
+          if (typeof account !== 'boolean') {
+            setConnectedWallet(account)
+            setHashedWallet(`${account.slice(0, 6)}......${account.slice(account.length - 4, account.length)}`.toLowerCase());
+            setWalletIsConnected(true)
+
+            return checkWalletChainAndSwitch(chainInfo.hex).then(connected => {
+              console.log('Network Switched', connected)
+              if (connected === true) {
+                // getConnectedWalletBalance().then(balance => setWalletBalance(balance))
+                setSwitchedNetwork(previousState => ({...previousState, status: true}))
+                return
               }
-            }
-            setShowChainPopUp(false)
-            setSwitchedNetwork(previousState => ({...previousState, status: true}))
-            return false;
-          });
+            })
+          }
 
-          
-          return getConnectedWalletAddress().then(account => {
-            if (typeof account !== 'boolean') {
-              setConnectedWallet(account)
-              setHashedWallet(`${account.slice(0, 6)}......${account.slice(account.length - 4, account.length)}`.toLowerCase());
-              setWalletIsConnected(true)
+          setIsLoading(false)
+        })
+      }
 
-              return checkWalletChainAndSwitch(chainInfo.hex).then(connected => {
-                console.log('Network Switched', connected)
-                if (connected === true) {
-                  // getConnectedWalletBalance().then(balance => setWalletBalance(balance))
-                  setSwitchedNetwork(previousState => ({...previousState, status: true}))
-                  return
-                }
-              })
-            }
-
-            setIsLoading(false)
-          })
-        }
-
-        setOpenMetamaskWarning(true)
-        return;
-      })
-      
-      setIsLoading(false)
-    }, 1200);
+      setOpenMetamaskWarning(true)
+      return;
+    })
+    
+    setIsLoading(false)
   }, [chainInfo.hex, walletIsConnected])
 
 
