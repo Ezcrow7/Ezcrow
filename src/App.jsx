@@ -10,22 +10,13 @@ import { checkIfMetamaskIsInstalled, checkWalletChainAndSwitch, connectToMetamas
 function App() {
 
   const chainInfo = { hex: '0x1389', title: 'Mantle', symbol: 'MNT' },
-        [showChainPopUp, setShowChainPopUp] = useState(false),
-        [isLoading, setIsLoading] = useState(true),
+        // [showChainPopUp, setShowChainPopUp] = useState(false),
+        // [isLoading, setIsLoading] = useState(true),
         // METAMASK RELATED STATES
         [hashedWallet, setHashedWallet] = useState('Connect Wallet'),
         [connectedWallet, setConnectedWallet] = useState(''),
-        [openMetamaskWarning, setOpenMetamaskWarning] = useState(false),
+        // [openMetamaskWarning, setOpenMetamaskWarning] = useState(false),
         [walletIsConnected, setWalletIsConnected] = useState(false),
-        [walletBalance, setWalletBalance] = useState({
-          networkTokenBalance: 0,
-          standardTokenBalance: 0,
-          standardTokenSymbol: 'USDC',
-          versusStandardTokenBalance: 0,
-          versusStandardTokenSymbol: 'STLOS',
-          rbnTokenBalance: 0,
-          rbnTokenSymbol: 'RBN'
-        }),
         [switchedNetwork, setSwitchedNetwork] = useState({
           status: false,
           portfolioMessage: `Please connect to the ${chainInfo.title} mainnet for events in your portfolio`,
@@ -44,12 +35,12 @@ function App() {
         window.ethereum.on('chainChanged', (_chainId) => {
           if (typeof _chainId !== 'undefined') {
             if (_chainId !== chainInfo.hex) { /* METAMASK IS NOT ON THE PREFERRED NETWORK */
-              setShowChainPopUp(true)
+              // setShowChainPopUp(true)
               setSwitchedNetwork(previousState => ({...previousState, status: false}))
               return true;
             }
           }
-          setShowChainPopUp(false)
+          // setShowChainPopUp(false)
           setSwitchedNetwork(previousState => ({...previousState, status: true}))
           return false;
         });
@@ -71,15 +62,15 @@ function App() {
             })
           }
 
-          setIsLoading(false)
+          // setIsLoading(false)
         })
       }
 
-      setOpenMetamaskWarning(true)
+      // setOpenMetamaskWarning(true)
       return;
     })
     
-    setIsLoading(false)
+    // setIsLoading(false)
   }, [chainInfo.hex, walletIsConnected])
 
 
@@ -94,7 +85,7 @@ function App() {
   const connectToWallet = async () => {
     connectToMetamask().then(metamaskData => {
       if (typeof metamaskData === typeof true) {
-        setOpenMetamaskWarning(true)
+        // setOpenMetamaskWarning(true)
         return;
       }
 
@@ -124,7 +115,6 @@ function App() {
         hashedWallet={hashedWallet}
         walletIsConnected={walletIsConnected}
         chainInfo={chainInfo}
-        walletBalance={walletBalance}
       />
 
       <Listings
