@@ -17,23 +17,25 @@ const Listings = ({ switchedNetwork }) => {
 
   useEffect(() => {
     if (switchedNetwork.status) {
-      getOfferedTokens().then(tokens => {
-        const updatedArray = tokens?.map((obj) => {
-          return tokenPairs?.map((tokenPair) => ({
-            ...obj,
-            ...tokenPair
-          }))
-        })
-
-        // console.log('updatedArray', updatedArray.flat());
-        setOfferedTokens(updatedArray.flat())
-      })
+      loadListedTokens()
     }
   }, [switchedNetwork.status])
 
 
 
+  const loadListedTokens = async () => {
+    getOfferedTokens().then(tokens => {
+      const updatedArray = tokens?.map((obj) => {
+        return tokenPairs?.map((tokenPair) => ({
+          ...obj,
+          ...tokenPair
+        }))
+      })
 
+      // console.log('updatedArray', updatedArray.flat());
+      setOfferedTokens(updatedArray.flat())
+    })
+  }
 
 
 
@@ -85,10 +87,12 @@ const Listings = ({ switchedNetwork }) => {
             {tabToShow === 'buy' ?
               <BuyListings
                 offeredToken={offeredToken}
+                loadListedTokens={loadListedTokens}
               />
             :
               <SellListings
                 offeredToken={offeredToken}
+                loadListedTokens={loadListedTokens}
               />
             }
           </div>

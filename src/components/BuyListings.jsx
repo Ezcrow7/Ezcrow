@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { getTokenSymbol, hashWalletID } from '../appCore/globalFunctions'
 import { isSpendApproved } from '../appCore/web3ReadFunctions'
+import { approveStandardTokenToSpendOnTrade, buyOfferedTradeToken } from '../appCore/web3WriteFunctions'
 
 
 
 
 
 
-const BuyListings = ({ offeredToken }) => {
+const BuyListings = ({ offeredToken, loadListedTokens }) => {
   const [expandItemToBuy, setExpandItemToBuy] = useState(false)
   const [tokenName, setTokenName] = useState('')
   const [approvedSpendAmount, setApprovedSpendAmount] = useState(0)
@@ -18,8 +19,8 @@ const BuyListings = ({ offeredToken }) => {
 
   useEffect(() => {
     getTokenSymbol(offeredToken.tokenInstance).then(symbol => setTokenName(symbol))
-    isSpendApproved(offeredToken.pairedTokenAddress, offeredToken.tradeAddressOfPairedToken)
-  }, [offeredToken.tokenInstance])
+    isSpendApproved(offeredToken.pairedTokenAddress, offeredToken.tradeAddressOfPairedToken).then(approvedAmount => setApprovedSpendAmount(approvedAmount))
+  }, [offeredToken])
   
 
 
@@ -44,15 +45,29 @@ const BuyListings = ({ offeredToken }) => {
       </aside>
 
       <aside className="col-span-2 text-right">
-        <button className="btn-primary w-36 py-1.5"
-          onClick={() => setExpandItemToBuy(!expandItemToBuy)}
-        >Buy ETH</button>
+        {(offeredToken.tokensLeft / Math.pow(10, 6)) > approvedSpendAmount ?
+          <button className="bg-ezcrow-800 text-white w-36 py-1.5"
+            onClick={() => {
+              approveStandardTokenToSpendOnTrade((offeredToken.tokensLeft / Math.pow(10, 6)), offeredToken.pairedTokenAddress, offeredToken.tradeAddressOfPairedToken).then(isApproved => {
+                if (isApproved) {
+                  setExpandItemToBuy(!expandItemToBuy)
+                  setApprovedSpendAmount(offeredToken.tokensLeft / Math.pow(10, 6))
+                  return
+                }
+              })
+            }}
+          >Approve {offeredToken.nameOfPair}</button>
+        :
+          <button className="btn-primary w-36 py-1.5"
+            onClick={() => setExpandItemToBuy(!expandItemToBuy)}
+          >Buy {tokenName}</button>
+        }
       </aside>
 
       <aside className={`col-span-10 grid grid-cols-6 sm:grid-cols-12 transition-all duration-300 overflow-hidden ${expandItemToBuy ? 'h-44 border-t-2 py-8' : 'h-0'}`}>
         <div className="col-span-6">
           {/* <input type="text" className="border px-2 py-1 outline-none" placeholder="Amount to buy" />
-          <button className="btn-primary w-36 py-1.5">Buy ETH</button> */}
+          <button className="btn-primary w-36 py-1.5">Buy {tokenName}</button> */}
         </div>
 
         <div className="col-span-6 space-y-6">
@@ -75,7 +90,12 @@ const BuyListings = ({ offeredToken }) => {
               onClick={() => setExpandItemToBuy(!expandItemToBuy)}
             >Cancel</button>
 
-            <button className="btn-primary w-2/3 py-2">Buy ETH</button>
+            <button className="btn-primary w-2/3 py-2"
+              onClick={() => {
+                buyOfferedTradeToken('EzcrowDemo', offeredToken.offerId, amoutOfTokenToBuy, offeredToken.tradeAddressOfPairedToken)
+                .then(loadListedTokens())
+              }}
+            >Spend {offeredToken.nameOfPair}</button>
           </div>
         </div>
       </aside>

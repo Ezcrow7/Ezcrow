@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { GENERAL_TRADE_ABI, SELL_TOKEN_ABI } from "./coreVariables";
 import { getConnectedWalletAddress, initContract, web3 } from "./globalFunctions";
 
@@ -5,15 +6,15 @@ import { getConnectedWalletAddress, initContract, web3 } from "./globalFunctions
 
 
 
-export const approveStandardTokenToSpendOnTrade = async (tokenBuyAmount) => {
+export const approveStandardTokenToSpendOnTrade = async (tokenBuyAmount, tokenAddress, tradeAddress) => {
   let account = await getConnectedWalletAddress(),
-      teamTokenContract = await initContract(SELL_TOKEN_ABI, RBN_STANDARD_TOKEN_ADDRESS),
+      teamTokenContract = await initContract(SELL_TOKEN_ABI, tokenAddress),
       approveAmount = web3.utils.toWei(tokenBuyAmount.toString(), 'lovelace');
 
 
 
   return new Promise((resolve, reject) => {
-    teamTokenContract.methods.approve(RBN_TRADE_TOKEN_ADDRESS, approveAmount)
+    teamTokenContract.methods.approve(tradeAddress, approveAmount)
     .send({
       from: account,
       maxPriorityFeePerGas: null,
@@ -53,7 +54,9 @@ export const buyOfferedTradeToken = async (eventCode, offerId, amountToBuy, trad
   return new Promise((resolve, reject) => {
     mainContract.methods.buyOfferedTokens(eventCode, offerId, convertedAmountToBuy)
     .send({
-      from: userAddress
+      from: userAddress,
+      maxPriorityFeePerGas: null,
+      maxFeePerGas: null,
     })
     .once('transactionHash', (hash) => {
       console.log("hash", hash);
