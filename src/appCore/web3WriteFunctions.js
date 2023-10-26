@@ -55,8 +55,7 @@ export const buyOfferedTradeToken = async (eventCode, offerId, amountToBuy, trad
     mainContract.methods.buyOfferedTokens(eventCode, offerId, convertedAmountToBuy)
     .send({
       from: userAddress,
-      maxPriorityFeePerGas: null,
-      maxFeePerGas: null,
+      gasLimit: 5000000
     })
     .once('transactionHash', (hash) => {
       console.log("hash", hash);

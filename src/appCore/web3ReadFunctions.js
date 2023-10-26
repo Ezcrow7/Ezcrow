@@ -1,4 +1,4 @@
-import { GENERAL_TRADE_ABI, SELL_TOKEN_ABI, dINR_TRADE_ADDRESS } from "./coreVariables"
+import { GENERAL_TRADE_ABI, SELL_TOKEN_ABI, dINR_TRADE_ADDRESS, dUSD_TRADE_ADDRESS } from "./coreVariables"
 import { getConnectedWalletAddress, initContract } from "./globalFunctions"
 
 
@@ -28,7 +28,7 @@ export const isSpendApproved = async (tokenAddress, tradeAddress) => {
 
 export const getOfferedTokens = async () => {
   try {
-    const eventContract = await initContract(GENERAL_TRADE_ABI, dINR_TRADE_ADDRESS),
+    const eventContract = await initContract(GENERAL_TRADE_ABI, dUSD_TRADE_ADDRESS),
           offeredToken = await eventContract.methods.getAllEventOffers('EzcrowDemo').call();
 
     // console.log('offeredToken', offeredToken);
