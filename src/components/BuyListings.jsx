@@ -14,6 +14,7 @@ const BuyListings = ({ offeredToken, loadListedTokens }) => {
   const [tokenName, setTokenName] = useState('')
   const [approvedSpendAmount, setApprovedSpendAmount] = useState(0)
   const [amoutOfTokenToBuy, setAmoutOfTokenToBuy] = useState('')
+  const amountToApprove = ((tokensLeft * (rate.numerator / rate.denominator)) / Math.pow(10, 6));
   
 
 
@@ -45,7 +46,7 @@ const BuyListings = ({ offeredToken, loadListedTokens }) => {
       </aside>
       
       <aside className="col-span-2">
-        { (rate.numerator / rate.denominator) / (Math.pow(10, 6)) } <span className="text-xs">{nameOfPair}</span>
+        { rate.numerator / rate.denominator } <span className="text-xs">{nameOfPair}</span>
       </aside>
 
       <aside className="col-span-2">
@@ -57,13 +58,13 @@ const BuyListings = ({ offeredToken, loadListedTokens }) => {
       </aside>
 
       <aside className="col-span-2 text-right">
-        {(tokensLeft / Math.pow(10, 6)) > (approvedSpendAmount / Math.pow(10, 6)) ?
+        {amountToApprove > (approvedSpendAmount / Math.pow(10, 6)) ?
           <button className="bg-ezcrow-800 text-white w-36 py-1.5"
             onClick={() => {
-              approveStandardTokenToSpendOnTrade((tokensLeft / Math.pow(10, 6)), pairedTokenAddress, tradeAddressOfPairedToken).then(isApproved => {
+              approveStandardTokenToSpendOnTrade(amountToApprove, pairedTokenAddress, tradeAddressOfPairedToken).then(isApproved => {
                 if (isApproved) {
                   setExpandItemToBuy(!expandItemToBuy)
-                  setApprovedSpendAmount(tokensLeft / Math.pow(10, 6))
+                  setApprovedSpendAmount(amountToApprove)
                   return
                 }
               })
