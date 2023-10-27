@@ -88,7 +88,7 @@ const BuyListings = ({ offeredToken, loadListedTokens }) => {
             <input
               type="text"
               className="border px-3 py-2 sm:w-2/3 outline-none"
-              placeholder="Amount to buy"
+              placeholder={`Amount of ${tokenName} to buy`}
               value={amoutOfTokenToBuy}
               onChange={(event) => {
                 if (event.target.value > -1 || event.target.value === '') {

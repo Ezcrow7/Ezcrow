@@ -9,16 +9,16 @@ export const dUSD_TOKEN_ADDRESS = "0x3D3b771725074410dBd04cB591fafd017f4FAB9C"
 
 
 export const tokenPairs = [
-  {
-    nameOfPair: "dINR",
-    pairedTokenAddress: "0x671d7Dd87Dc5b8e1587Ac9c6fC9Fb9d833155703",
-    tradeAddressOfPairedToken: "0xeB14EE03bC142f7615aB2cf145346e9d1DeD365f",
-  },
-  {
-    nameOfPair: "dIDR",
-    pairedTokenAddress: "0xcd7561201E10273218762882CC5cF197d9764df3",
-    tradeAddressOfPairedToken: "0xcFda2Fe1B685F846d49793301abbB68C80bcD654",
-  },
+  // {
+  //   nameOfPair: "dINR",
+  //   pairedTokenAddress: "0x671d7Dd87Dc5b8e1587Ac9c6fC9Fb9d833155703",
+  //   tradeAddressOfPairedToken: "0xeB14EE03bC142f7615aB2cf145346e9d1DeD365f",
+  // },
+  // {
+  //   nameOfPair: "dIDR",
+  //   pairedTokenAddress: "0xcd7561201E10273218762882CC5cF197d9764df3",
+  //   tradeAddressOfPairedToken: "0xcFda2Fe1B685F846d49793301abbB68C80bcD654",
+  // },
   {
     nameOfPair: "dUSD",
     pairedTokenAddress: "0x3D3b771725074410dBd04cB591fafd017f4FAB9C",
