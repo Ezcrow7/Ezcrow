@@ -2,7 +2,7 @@ import React from 'react'
 
 const SellListings = () => {
   return (
-    <section className="grid grid-cols-10 items-center border-b-2 py-8 px-4">
+    <section className="grid grid-cols-10 items-center border-b-2 py-8 px-4 cursor-not-allowed pointer-events-none opacity-60">
       <aside className="col-span-3 font-semibold text-xl">
         BTC/USDC
       </aside>
@@ -20,7 +20,7 @@ const SellListings = () => {
       </aside>
 
       <aside className="col-span-2 text-right">
-        <button className="btn-danger w-36 py-1.5">Sell ETH</button>
+        <button className="btn-danger w-36 py-1.5">Sell BTC</button>
       </aside>
     </section>
   )
